@@ -1,0 +1,17 @@
+{
+    "manifest_version": 2,
+  
+    "name": "Auto Fill Extension",
+    "description": "This extension allows the user to fill the web form automatically.",
+    "version": "1.0",
+  
+    "browser_action": {
+      "default_icon": "icon.png",
+      "default_popup": "./html/index.html",
+      "default_title": "Click here!"
+    },
+    "permissions": [
+      "activeTab",
+      "storage"
+    ]
+  }
