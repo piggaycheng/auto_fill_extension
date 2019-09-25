@@ -4,12 +4,18 @@ chrome.runtime.onMessage.addListener(function(myMessage, sender, sendResponse){
     return true;
 });
 
-console.log("background page ready");  
+// console.log("background page ready");  
 
-// let contextMenusItem = {
-//     "id": "Auto Fill",
-//     "title": "Auto Fill",
-//     "contexts": ["all"]
-// };
+let contextMenusItem = {
+    "id": "autoFill",
+    "title": "add input to autoFill",
+    "contexts": ["selection"]
+};
 
-// chrome.contextMenus.create(contextMenusItem);
+chrome.contextMenus.create(contextMenusItem);
+
+chrome.contextMenus.onClicked.addListener(function(clickData){
+    if(clickData.menuItemId == 'autoFill' && clickData.selectionText) {
+        
+    }
+});
