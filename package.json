@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/piggaycheng/auto_fill_extension#readme",
   "dependencies": {
-    "jquery": "^3.4.1"
+    "jquery": "^3.4.1",
+    "bootstrap": "^4.3.1"
   }
 }
