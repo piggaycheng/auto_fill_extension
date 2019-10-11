@@ -17,17 +17,20 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
                     '<div class="modal-dialog" role="document">'+
                         '<div class="modal-content">'+
                             '<div class="modal-header">'+
-                                '<h5 class="modal-title">Modal title</h5>'+
+                                '<h3 class="modal-title">Save Data</h3>'+
                                 '<button type="button" class="close" data-dismiss="modal" aria-label="Close">'+
                                     '<span aria-hidden="true">&times;</span>'+
                                 '</button>'+
                             '</div>'+
                             '<div class="modal-body">'+
-                                '<p>Modal body text goes here.</p>'+
+                                '<lebel for="nameInput">Data Name: </lebel>'+
+                                '<input type="text" id="nameInput" /><br><br>'+
+                                '<lebel for="valueInput">Data Value: </lebel>'+
+                                '<input type="text" id="valueInput" />'+
                             '</div>'+
                             '<div class="modal-footer">'+
-                                '<button type="button" class="btn btn-primary">Save changes</button>'+
-                                '<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>'+
+                                '<button type="button" class="btn btn-primary" id="modalYes">Save</button>'+
+                                '<button type="button" class="btn btn-secondary" data-dismiss="modal" id="modalNo">Cancel</button>'+
                             '</div>'+
                         '</div>'+
                     '</div>'+
@@ -35,6 +38,13 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
             );
         }
 
+        var focusElement = $(':focus');
+        $('#valueInput').val(focusElement.val());
+        // 顯示modal
         $('#addInputModal').modal('toggle');
     }
+});
+
+$(document).on('click','#modalYes',function(e) {
+    $('#addInputModal').modal('toggle');
 });
