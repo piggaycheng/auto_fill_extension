@@ -23,6 +23,8 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
                                 '</button>'+
                             '</div>'+
                             '<div class="modal-body">'+
+                                '<lebel for="idInput">element id: </lebel>'+
+                                '<input type="text" id="idInput" /><br><br>'+
                                 '<lebel for="nameInput">Data Name: </lebel>'+
                                 '<input type="text" id="nameInput" /><br><br>'+
                                 '<lebel for="valueInput">Data Value: </lebel>'+
@@ -38,7 +40,8 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
             );
         }
 
-        var focusElement = $(':focus');
+        let focusElement = $(':focus');
+        $('#idInput').val(focusElement.attr('id'));
         $('#valueInput').val(focusElement.val());
         // 顯示modal
         $('#addInputModal').modal('toggle');
