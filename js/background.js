@@ -1,8 +1,15 @@
-chrome.runtime.onMessage.addListener(function(myMessage, sender, sendResponse){
-    //do something that only the extension has privileges here
-    console.log(myMessage);
-    return true;
-});
+const ACTION_SAVE = 1;
+
+// chrome.runtime.onMessage.addListener(function(data, sender, sendResponse){
+//     //do something that only the extension has privileges here
+//     console.log(data);
+//     let data = JSON.parse(data);
+//     // save input
+//     if(data.action === ACTION_SAVE) {
+
+//     }
+//     return true;
+// });
 
 // console.log("background page ready");  
 

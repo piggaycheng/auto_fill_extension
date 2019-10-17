@@ -1,4 +1,5 @@
 console.log("內容腳本注入");  
+const ACTION_SAVE = 1;
 
 // $('body').click(function() {
 //     //send message to ext
@@ -49,5 +50,33 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
 });
 
 $(document).on('click','#modalYes',function(e) {
+    // let sendData = {
+    //     'action': ACTION_SAVE,
+    //     'data': {
+    //         'id': $('#idInput').val(),
+    //         'name': $('#nameInput').val(),
+    //         'value': $('#valueInput').val()
+    //     }
+    // };
+
+    // chrome.runtime.sendMessage(JSON.stringify(sendData), function(response) {
+    //     //callback
+    // });
+    let input = {};
+    chrome.storage.sync.get(['input'], function(result) {
+        if(result.input) {
+            result.input.id = $('#idInput').val();
+            result.input.name = $('#nameInput').val();
+            result.input.value = $('#valueInput').val();
+            input = result.input;
+        } else {
+            input.id = $('#idInput').val();
+            input.name = $('#nameInput').val();
+            input.value = $('#valueInput').val();
+        }
+        console.log(input);
+        chrome.storage.sync.set({'input': input});
+    });
+
     $('#addInputModal').modal('toggle');
 });
