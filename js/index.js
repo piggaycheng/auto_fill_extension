@@ -8,6 +8,7 @@ $( document ).ready(function() {
         });
     });
 
+    // TODO:
     $('#checkCheckbox').on('click', function(e){
         chrome.storage.sync.clear(function(){
             $('#inputsArea').empty();
