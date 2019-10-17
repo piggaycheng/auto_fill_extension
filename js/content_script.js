@@ -62,20 +62,21 @@ $(document).on('click','#modalYes',function(e) {
     // chrome.runtime.sendMessage(JSON.stringify(sendData), function(response) {
     //     //callback
     // });
-    let input = {};
-    chrome.storage.sync.get(['input'], function(result) {
-        if(result.input) {
-            result.input.id = $('#idInput').val();
-            result.input.name = $('#nameInput').val();
-            result.input.value = $('#valueInput').val();
-            input = result.input;
+    let inputs = {};
+    chrome.storage.sync.get(['inputs'], function(result) {
+        let inputId = $('#idInput').val();
+        if(result.inputs) {
+            result.inputs[inputId] = {};
+            result.inputs[inputId].name = $('#nameInput').val();
+            result.inputs[inputId].value = $('#valueInput').val();
+            inputs = result.inputs;
         } else {
-            input.id = $('#idInput').val();
-            input.name = $('#nameInput').val();
-            input.value = $('#valueInput').val();
+            inputs[inputId] = {};
+            inputs[inputId].name = $('#nameInput').val();
+            inputs[inputId].value = $('#valueInput').val();
         }
-        console.log(input);
-        chrome.storage.sync.set({'input': input});
+        console.log(inputs);
+        chrome.storage.sync.set({'inputs': inputs});
     });
 
     $('#addInputModal').modal('toggle');
