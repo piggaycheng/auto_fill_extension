@@ -46,6 +46,12 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
         $('#valueInput').val(focusElement.val());
         // 顯示modal
         $('#addInputModal').modal('toggle');
+    } else if(msg.action == 'check_all_ckeckbox') {
+        let allCheckbox = $("input:checkbox");
+        // console.log(allCheckbox);
+        allCheckbox.each(function(){
+            $(this).prop("checked", true);
+        });
     }
 });
 

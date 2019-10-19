@@ -8,11 +8,9 @@ $( document ).ready(function() {
         });
     });
 
-    // TODO:
     $('#checkCheckbox').on('click', function(e){
-        chrome.storage.sync.clear(function(){
-            $('#inputsArea').empty();
-            $('#message').text('clear success!!'); 
+        chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
+            chrome.tabs.sendMessage(tabs[0].id, {action: "check_all_ckeckbox"});  
         });
     });
 
