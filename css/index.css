@@ -3,6 +3,32 @@ body {
     width: 375px;
 }
 
-div {
+/* #main {
     text-align: center;
+} */
+
+ul { 
+    list-style-type: none; 
+    margin: 0; 
+    padding: 0; 
+    margin-bottom: 10px; 
+    width: 50%;
+}
+
+li { 
+    margin: 5px; 
+    padding: 5px; 
+    width: 100%; 
+}
+
+#actionCreator, #actionType {
+    display: inline-block;
+}
+
+#actionCreator {
+    width: 50%;
+}
+
+#actionType {
+    width: 50%;
 }

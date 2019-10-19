@@ -7,12 +7,42 @@
     <title>Document</title>
     <link rel="stylesheet" type="text/css" href="../css/index.css">
     <link rel="stylesheet" type="text/css" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../node_modules/jquery-ui-dist/jquery-ui.min.css">
     <script src="../node_modules/jquery/dist/jquery.min.js"></script>   
+    <script src="../node_modules/jquery-ui-dist/jquery-ui.min.js"></script>   
     <script src="../js/index.js"></script>
 </head>
 <body>
     <div id="main">
         <div id="inputsArea"></div>
+        <div id="cardsArea">
+            <div id="actionArea">
+                <div id="actionCreator">
+                    <ul id="action">
+                        <li id="draggable" class="ui-state-highlight">Drag me down</li>
+                    </ul>
+                </div>
+                <div id="actionType">
+                    <label for="sel1">Action Type:</label>
+                    <select class="form-control" id="sel1">
+                        <option>Select an action type</option>
+                        <option>add text input</option>
+                        <option>check all checkbox</option>
+                        <option>click button</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div id="actionCards">
+                <ul id="sortable">
+                    <li class="ui-state-default">Select an action type</li>
+                    <li class="ui-state-default">add text input</li>
+                    <li class="ui-state-default">check all checkbox</li>
+                    <li class="ui-state-default">click button</li>
+                </ul>
+            </div>
+        </div>
+        
         <button type="button" class="btn btn-primary" id="checkCheckbox">checkbox ckeck</button><br><br>
         <button type="button" class="btn btn-danger" id="clearStorageBtn">clear</button>
         <div id="message"></div>
