@@ -34,6 +34,10 @@ li {
     padding: 5px; 
 }
 
+li.ui-draggable {
+    width: calc(100% - 10px) !important;
+}
+
 #actionCreator, #actionType {
     display: inline-block;
 }
