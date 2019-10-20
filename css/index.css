@@ -7,7 +7,7 @@ body {
     text-align: center;
 } */
 
-ul { 
+/* ul#sortable { 
     list-style-type: none; 
     margin: 0; 
     padding: 0; 
@@ -15,10 +15,23 @@ ul {
     width: 50%;
 }
 
+ul#action { 
+    list-style-type: none; 
+    margin: 0; 
+    padding: 0; 
+    margin-bottom: 10px; 
+} */
+
+ul { 
+    list-style-type: none; 
+    margin: 0; 
+    padding: 0; 
+    margin-bottom: 10px; 
+}
+
 li { 
     margin: 5px; 
     padding: 5px; 
-    width: 100%; 
 }
 
 #actionCreator, #actionType {
@@ -30,5 +43,6 @@ li {
 }
 
 #actionType {
-    width: 50%;
+    width: 40%;
+    margin-left: 5px;
 }
