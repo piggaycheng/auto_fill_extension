@@ -1,5 +1,9 @@
 $( document ).ready(function() {
     console.log( "ready!");
+    const NONE = 0;
+    const ADD_TEXT_INPUT = 1;
+    const CHECK_ALL_CHECKBOX = 2;
+    const CLICK = 3;
 
     $('#clearStorageBtn').on('click', function(e){
         chrome.storage.sync.clear(function(){
@@ -18,6 +22,16 @@ $( document ).ready(function() {
         
     });
 
+    // selector必須要有選值才可以新增卡片
+    $('#actionSelector').on('change', function(e){
+        if($('#actionSelector').val() == 0) {
+            $('#draggable').draggable("option", "disabled", true);
+        } else {
+            $('#draggable').draggable("option", "disabled", false);
+        }
+    });
+
+    // 取得chrome storage data
     chrome.storage.sync.get(['inputs'], function(result) {
         if(result.inputs) {
             let inputIds = Object.keys(result.inputs);
@@ -31,13 +45,23 @@ $( document ).ready(function() {
     chrome.storage.onChanged.addListener(onStorageChangeHandler);
 
     $("#sortable").sortable({
-        revert: true
+        revert: true,
+        // stop: function( event, ui ) {
+        //     console.log(ui);
+        // }
     });
+
     $("#draggable").draggable({
         connectToSortable: "#sortable",
         helper: "clone",
-        revert: "invalid"
+        revert: "invalid",
+        disabled: true,
+        stop: function( event, ui ) {
+            let el = ui.helper;
+            el.data('type', $('#actionSelector').val());
+        }
     });
+    
     $("ul, li").disableSelection();
 });
 
