@@ -14,6 +14,10 @@ $( document ).ready(function() {
         });
     });
 
+    $('#okBtn').on('click', function(e){
+        
+    });
+
     chrome.storage.sync.get(['inputs'], function(result) {
         if(result.inputs) {
             let inputIds = Object.keys(result.inputs);
