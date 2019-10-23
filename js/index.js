@@ -18,8 +18,16 @@ $( document ).ready(function() {
         });
     });
 
+    // 按下OK
     $('#okBtn').on('click', function(e){
-        
+        let highlights = $('.ui-state-highlight');
+        for(let key in highlights) {
+            if(key > 0) {
+                highlights.eq(key).addClass('ui-state-default').removeClass('ui-state-highlight');
+            }
+        }
+        // 隱藏
+        $(this).hide();
     });
 
     // selector必須要有選值才可以新增卡片
@@ -53,12 +61,17 @@ $( document ).ready(function() {
 
     $("#draggable").draggable({
         connectToSortable: "#sortable",
-        helper: "clone",
-        revert: "invalid",
+        helper: "clone",                // 複製
+        revert: "invalid",              // 還原
         disabled: true,
         stop: function( event, ui ) {
             let el = ui.helper;
             el.data('type', $('#actionSelector').val());
+        },
+        stop: function( event, ui ) {
+            if($('.ui-state-highlight').length > 2) {
+                $('#okBtn').show();
+            }
         }
     });
     
