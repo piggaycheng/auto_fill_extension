@@ -8,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href="../css/index.css">
     <link rel="stylesheet" type="text/css" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="../node_modules/jquery-ui-dist/jquery-ui.min.css">
+    <link rel="stylesheet" type="text/css" href="../node_modules/@fortawesome/fontawesome-free/css/all.min.css">
     <script src="../node_modules/jquery/dist/jquery.min.js"></script>   
     <script src="../node_modules/jquery-ui-dist/jquery-ui.min.js"></script>   
     <script src="../js/index.js"></script>
@@ -16,9 +17,9 @@
     <div id="main">
         <div id="inputsArea"></div>
         <div id="cardsArea">
-            <div id="actionArea">
+            <div id="actionCreateArea">
                 <div id="actionCreator">
-                    <ul id="action">
+                    <ul>
                         <li id="draggable" class="ui-state-highlight">Drag down to create</li>
                     </ul>
                 </div>
@@ -33,13 +34,21 @@
                 </div>
             </div>
             
-            <div id="actionCards">
-                <ul id="sortable">
-                    <li class="ui-state-default">Select an action type</li>
-                    <li class="ui-state-default">add text input</li>
-                    <li class="ui-state-default">check all checkbox</li>
-                    <li class="ui-state-default">click button</li>
-                </ul>
+            <div id="actionListArea" class="row">
+                <div id="actionCards" class="col">
+                    <ul id="sortable">
+                        <li class="ui-state-default">Select an action type</li>
+                        <li class="ui-state-default">add text input</li>
+                        <li class="ui-state-default">check all checkbox</li>
+                        <li class="ui-state-default">click button</li>
+                    </ul>
+                </div>
+                <div id="actionEditor" class="col">
+                    <div><button class="btn"><i class="fas fa-trash"></i></button></div>
+                    <div><button class="btn"><i class="fas fa-trash"></i></button></div>
+                    <div><button class="btn"><i class="fas fa-trash"></i></button></div>
+                    <div><button class="btn"><i class="fas fa-trash"></i></button></div>
+                </div>
             </div>
         </div>
         <button type="button" class="btn btn-primary" id="okBtn" style="display: none">OK</button><br><br>
