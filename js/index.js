@@ -1,5 +1,7 @@
+import actionType from './enum/actionType.js';
+
 $( document ).ready(function() {
-    console.log( "ready!");
+    console.log("ready!");
     const NONE = 0;
     const ADD_TEXT_INPUT = 1;
     const CHECK_ALL_CHECKBOX = 2;
