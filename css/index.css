@@ -31,7 +31,7 @@ ul {
 
 li { 
     margin: 5px; 
-    padding: 5px; 
+    padding: .375rem; 
 }
 
 li.ui-draggable {
@@ -56,8 +56,11 @@ li.ui-draggable {
 }
 
 #actionEditor {
-    width: 30%;
     margin: 0px;
+}
+
+#actionListArea{
+    width: 100%;
 }
 
 .btn {
@@ -69,10 +72,14 @@ li.ui-draggable {
     cursor: pointer;
 }
 
-.row {
+.table-row {
     display: table;
 }
 
-.col {
+.table-col {
     display: table-cell;
+}
+
+.editArea {
+    margin: 5px;
 }

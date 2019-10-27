@@ -28,6 +28,8 @@ $( document ).ready(function() {
         }
         // 隱藏
         $(this).hide();
+        // 操作區塊顯示
+        $('#actionEditor').css('visibility', 'visible');
     });
 
     // selector必須要有選值才可以新增卡片
@@ -67,12 +69,15 @@ $( document ).ready(function() {
         stop: function( event, ui ) {
             let el = ui.helper;
             el.data('type', $('#actionSelector').val());
-        },
-        stop: function( event, ui ) {
+
             if($('.ui-state-highlight').length > 2) {
                 $('#okBtn').show();
             }
-        }
+        },
+        start: function( event, ui ) {
+            // 操作區塊隱藏
+            $('#actionEditor').css('visibility', 'hidden');
+        },
     });
     
     $("ul, li").disableSelection();

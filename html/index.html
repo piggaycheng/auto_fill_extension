@@ -34,20 +34,18 @@
                 </div>
             </div>
             
-            <div id="actionListArea" class="row">
-                <div id="actionCards" class="col">
+            <div id="actionListArea" class="table-row">
+                <div id="actionCards" class="table-col">
                     <ul id="sortable">
-                        <li class="ui-state-default">Select an action type</li>
-                        <li class="ui-state-default">add text input</li>
-                        <li class="ui-state-default">check all checkbox</li>
-                        <li class="ui-state-default">click button</li>
+                        <li class="ui-state-default" data-type="1">add text input</li>
+                        <li class="ui-state-default" data-type="2">check all checkbox </li>
+                        <li class="ui-state-default" data-type="3">click button</li>
                     </ul>
                 </div>
-                <div id="actionEditor" class="col">
-                    <div><button class="btn"><i class="fas fa-trash"></i></button></div>
-                    <div><button class="btn"><i class="fas fa-trash"></i></button></div>
-                    <div><button class="btn"><i class="fas fa-trash"></i></button></div>
-                    <div><button class="btn"><i class="fas fa-trash"></i></button></div>
+                <div id="actionEditor" class="table-col">
+                    <div class="editArea"><button class="btn"><i class="fas fa-trash"></i></button></div>
+                    <div class="editArea"><button class="btn"><i class="fas fa-trash"></i></button></div>
+                    <div class="editArea"><button class="btn"><i class="fas fa-trash"></i></button></div>
                 </div>
             </div>
         </div>
