@@ -1,6 +1,6 @@
 import actionType from './enum/actionType.js';
 
-$( document ).ready(function() {
+$(document).ready(function() {
     console.log("ready!");
     const NONE = 0;
     const ADD_TEXT_INPUT = 1;
@@ -83,6 +83,23 @@ $( document ).ready(function() {
     });
     
     $("ul, li").disableSelection();
+
+    //FIXME: 之後要改成依照storage中action長度來判斷
+    let defaultCards = $('.ui-state-default');
+    for(let i=0; i<defaultCards.length; i++) {
+        if(defaultCards.eq(i).data('type') == actionType.ADD_TEXT_INPUT) {
+            $('#actionEditor').append('<div class="editArea"><button class="btn trashBtn"><i class="fas fa-trash"></i></button>' + 
+            '<button class="btn"><i class="fas fa-edit"></i></button>' + 
+            '<button class="btn"><i class="fas fa-crosshairs"></i></button></div>');
+        } else {
+            $('#actionEditor').append('<div class="editArea"><button class="btn trashBtn"><i class="fas fa-trash"></i></button>');
+        }
+        
+    }
+});
+
+$(document).on('click', '.trashBtn', function(e){
+    console.log(e);
 });
 
 function onStorageChangeHandler(changes, namespace) {

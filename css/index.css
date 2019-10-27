@@ -72,11 +72,11 @@ li.ui-draggable {
     cursor: pointer;
 }
 
-.table-row {
+.tableRow {
     display: table;
 }
 
-.table-col {
+.tableCol {
     display: table-cell;
 }
 
