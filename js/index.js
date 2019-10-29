@@ -2,10 +2,6 @@ import actionType from './enum/actionType.js';
 
 $(document).ready(function() {
     console.log("ready!");
-    const NONE = 0;
-    const ADD_TEXT_INPUT = 1;
-    const CHECK_ALL_CHECKBOX = 2;
-    const CLICK = 3;
 
     $('#clearStorageBtn').on('click', function(e){
         chrome.storage.sync.clear(function(){
@@ -30,8 +26,29 @@ $(document).ready(function() {
         }
         // 隱藏
         $(this).hide();
-        // 操作區塊顯示
-        $('#actionEditor').css('visibility', 'visible');
+
+        // 儲存所有卡片
+        chrome.storage.sync.get(['cards'], function(result) {
+            let cards = $('.ui-state-default');
+            let cardArray = [];
+            for(let i=0; i<cards.length; i++) {
+                cardArray.push({});
+                cardArray[i].actionType = cards.eq(i).data('type');
+            }
+            chrome.storage.sync.set({'cards': cardArray});
+
+            for(let i=0; i<cardArray.length; i++) {
+                if(cardArray[i].actionType == actionType.ADD_TEXT_INPUT) {
+                    $('#actionEditor').append('<div class="editArea"><button class="btn trashBtn"><i class="fas fa-trash"></i></button>' + 
+                    '<button class="btn"><i class="fas fa-edit"></i></button>' + 
+                    '<button class="btn"><i class="fas fa-crosshairs"></i></button></div>');
+                } else if(cardArray[i].actionType == actionType.END) {
+                    // do nothing
+                }else {
+                    $('#actionEditor').append('<div class="editArea"><button class="btn trashBtn"><i class="fas fa-trash"></i></button>');
+                }
+            }
+        });
     });
 
     // selector必須要有選值才可以新增卡片
@@ -44,12 +61,29 @@ $(document).ready(function() {
     });
 
     // 取得chrome storage data
-    chrome.storage.sync.get(['inputs'], function(result) {
-        if(result.inputs) {
-            let inputIds = Object.keys(result.inputs);
-            let inputs = result.inputs;
-            for(index in inputIds) {
-                $('#inputsArea').prepend('<div>name: '+ inputs[inputIds[index]].name + ' value: ' + inputs[inputIds[index]].value +'</div>');
+    chrome.storage.sync.get(['cards'], function(result) {
+        if(result.cards) {
+            let cards = result.cards;
+            for(let index in cards) {
+                // 移除重複的endCard
+                if(cards[index].actionType == actionType.END) {
+                    $('#endCard').remove();
+                    $('#sortable').append('<li class="ui-state-default" data-type="'+ cards[index].actionType +'">end</li>');
+                } else {
+                    $('#sortable').append('<li class="ui-state-default" data-type="'+ cards[index].actionType +'">123</li>');
+                }
+            }
+
+            for(let i=0; i<cards.length; i++) {
+                if(cards[i].actionType == actionType.ADD_TEXT_INPUT) {
+                    $('#actionEditor').append('<div class="editArea"><button class="btn trashBtn"><i class="fas fa-trash"></i></button>' + 
+                    '<button class="btn"><i class="fas fa-edit"></i></button>' + 
+                    '<button class="btn"><i class="fas fa-crosshairs"></i></button></div>');
+                } else if(cards[i].actionType == actionType.END) {
+                    // do nothing
+                }else {
+                    $('#actionEditor').append('<div class="editArea"><button class="btn trashBtn"><i class="fas fa-trash"></i></button>');
+                }
             }
         }
     });
@@ -78,7 +112,7 @@ $(document).ready(function() {
         },
         start: function( event, ui ) {
             // 操作區塊隱藏
-            $('#actionEditor').css('visibility', 'hidden');
+            $('.editArea').remove();
         },
     });
     
@@ -91,7 +125,9 @@ $(document).ready(function() {
             $('#actionEditor').append('<div class="editArea"><button class="btn trashBtn"><i class="fas fa-trash"></i></button>' + 
             '<button class="btn"><i class="fas fa-edit"></i></button>' + 
             '<button class="btn"><i class="fas fa-crosshairs"></i></button></div>');
-        } else {
+        } else if(defaultCards.eq(i).data('type') == actionType.END) {
+            // do nothing
+        }else {
             $('#actionEditor').append('<div class="editArea"><button class="btn trashBtn"><i class="fas fa-trash"></i></button>');
         }
         

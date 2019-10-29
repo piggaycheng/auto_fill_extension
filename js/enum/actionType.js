@@ -1,4 +1,5 @@
 const actionType = {
+    END: -1,
     NONE: 0,
     ADD_TEXT_INPUT: 1,
     CHECK_ALL_CHECKBOX: 2,
