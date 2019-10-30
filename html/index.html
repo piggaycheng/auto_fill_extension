@@ -38,14 +38,9 @@
                 <div id="actionCards" class="tableCol">
                     <ul id="sortable">
                         <li id="endCard" class="ui-state-default" data-type="-1">end</li>
-                        <!-- <li class="ui-state-default" data-type="2">check all checkbox </li> -->
-                        <!-- <li class="ui-state-default" data-type="3">click button</li> -->
                     </ul>
                 </div>
                 <div id="actionEditor" class="tableCol">
-                    <!-- <div class="editArea"><button class="btn"><i class="fas fa-trash"></i></button></div>
-                    <div class="editArea"><button class="btn"><i class="fas fa-trash"></i></button></div>
-                    <div class="editArea"><button class="btn"><i class="fas fa-trash"></i></button></div> -->
                 </div>
             </div>
         </div>
@@ -53,6 +48,16 @@
         <button type="button" class="btn btn-primary" id="checkCheckbox">checkbox ckeck</button><br><br>
         <button type="button" class="btn btn-danger" id="clearStorageBtn">clear</button>
         <div id="message"></div>
+        <div id="editArea" style="display: none;">
+            <lebel for="idInput">Element Id: </lebel>
+            <input type="text" id="idInput" /><br><br>
+            <lebel for="nameInput">Data Name: </lebel>
+            <input type="text" id="nameInput" /><br><br>
+            <lebel for="idInput">Data Value: </lebel>
+            <input type="text" id="idInput" /><br><br>
+            <button type="button" class="btn btn-primary" id="editOkBtn">OK</button>
+            <button type="button" class="btn btn-danger" id="editCancelBtn">Cancel</button>
+        </div>
     </div>
 </body>
 </html>

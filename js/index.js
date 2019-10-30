@@ -39,16 +39,26 @@ $(document).ready(function() {
 
             for(let i=0; i<cardArray.length; i++) {
                 if(cardArray[i].actionType == actionType.ADD_TEXT_INPUT) {
-                    $('#actionEditor').append('<div class="editArea"><button class="btn trashBtn"><i class="fas fa-trash"></i></button>' + 
+                    $('#actionEditor').append('<div class="operateArea"><button class="btn trashBtn"><i class="fas fa-trash"></i></button>' + 
                     '<button class="btn"><i class="fas fa-edit"></i></button>' + 
                     '<button class="btn"><i class="fas fa-crosshairs"></i></button></div>');
                 } else if(cardArray[i].actionType == actionType.END) {
                     // do nothing
                 }else {
-                    $('#actionEditor').append('<div class="editArea"><button class="btn trashBtn"><i class="fas fa-trash"></i></button>');
+                    $('#actionEditor').append('<div class="operateArea"><button class="btn trashBtn"><i class="fas fa-trash"></i></button>');
                 }
             }
         });
+    });
+
+    // 按下OK(編輯)
+    $('#editOkBtn').on('click', function(e){
+        $('#editArea').hide();
+    });
+
+    // 按下cancel(編輯))
+    $('#editCancelBtn').on('click', function(e){
+        $('#editArea').hide();
     });
 
     // selector必須要有選值才可以新增卡片
@@ -76,13 +86,13 @@ $(document).ready(function() {
 
             for(let i=0; i<cards.length; i++) {
                 if(cards[i].actionType == actionType.ADD_TEXT_INPUT) {
-                    $('#actionEditor').append('<div class="editArea"><button class="btn trashBtn"><i class="fas fa-trash"></i></button>' + 
-                    '<button class="btn"><i class="fas fa-edit"></i></button>' + 
+                    $('#actionEditor').append('<div class="operateArea"><button class="btn trashBtn"><i class="fas fa-trash"></i></button>' + 
+                    '<button class="btn editBtn"><i class="fas fa-edit"></i></button>' + 
                     '<button class="btn"><i class="fas fa-crosshairs"></i></button></div>');
                 } else if(cards[i].actionType == actionType.END) {
                     // do nothing
-                }else {
-                    $('#actionEditor').append('<div class="editArea"><button class="btn trashBtn"><i class="fas fa-trash"></i></button>');
+                } else {
+                    $('#actionEditor').append('<div class="operateArea"><button class="btn trashBtn"><i class="fas fa-trash"></i></button>');
                 }
             }
         }
@@ -112,30 +122,19 @@ $(document).ready(function() {
         },
         start: function( event, ui ) {
             // 操作區塊隱藏
-            $('.editArea').remove();
+            $('.operateArea').remove();
         },
     });
     
     $("ul, li").disableSelection();
-
-    //FIXME: 之後要改成依照storage中action長度來判斷
-    let defaultCards = $('.ui-state-default');
-    for(let i=0; i<defaultCards.length; i++) {
-        if(defaultCards.eq(i).data('type') == actionType.ADD_TEXT_INPUT) {
-            $('#actionEditor').append('<div class="editArea"><button class="btn trashBtn"><i class="fas fa-trash"></i></button>' + 
-            '<button class="btn"><i class="fas fa-edit"></i></button>' + 
-            '<button class="btn"><i class="fas fa-crosshairs"></i></button></div>');
-        } else if(defaultCards.eq(i).data('type') == actionType.END) {
-            // do nothing
-        }else {
-            $('#actionEditor').append('<div class="editArea"><button class="btn trashBtn"><i class="fas fa-trash"></i></button>');
-        }
-        
-    }
 });
 
 $(document).on('click', '.trashBtn', function(e){
     console.log(e);
+});
+
+$(document).on('click', '.editBtn', function(e){
+    $('#editArea').show();
 });
 
 function onStorageChangeHandler(changes, namespace) {

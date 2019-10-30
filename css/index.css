@@ -80,6 +80,14 @@ li.ui-draggable {
     display: table-cell;
 }
 
-.editArea {
+.operateArea {
     margin: 5px;
+}
+
+#editArea {
+    padding: 5px;
+    margin: 5px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: black;
 }
