@@ -1,4 +1,4 @@
-import actionType from './enum/actionType.js';
+import {actionType, actionTypeText} from './enum/action.js';
 
 $(document).ready(function() {
     init();
@@ -22,7 +22,9 @@ $(document).ready(function() {
         let highlights = $('.ui-state-highlight');
         for(let key in highlights) {
             if(key > 0) {
-                highlights.eq(key).addClass('ui-state-default').removeClass('ui-state-highlight');
+                let text = highlights.eq(key).text();
+                console.log(text);
+                highlights.eq(key).addClass('ui-state-default').removeClass('ui-state-highlight').text(text);
             }
         }
         // 隱藏
@@ -55,9 +57,16 @@ $(document).ready(function() {
 
     $("#sortable").sortable({
         revert: true,
-        // stop: function( event, ui ) {
-        //     console.log(ui);
-        // }
+        start: function( event, ui ) {
+            // 操作區塊隱藏
+            $('.operateArea').remove();
+        },
+        stop: function( event, ui ) {
+            showOperateArea();
+        },
+        update: function( event, ui ) {
+            $('#okBtn').show();
+        },
     });
 
     $("#draggable").draggable({
@@ -67,7 +76,9 @@ $(document).ready(function() {
         disabled: true,
         stop: function( event, ui ) {
             let el = ui.helper;
-            el.data('type', $('#actionSelector').val());
+            let type = $('#actionSelector').val();
+            el.data('type', type);
+            el.text(actionTypeText[type]);
 
             if($('.ui-state-highlight').length > 2) {
                 $('#okBtn').show();
@@ -106,10 +117,11 @@ function init() {
                     $('#endCard').remove();
                     $('#sortable').append('<li class="ui-state-default" data-type="'+ cards[index].actionType +'">end</li>');
                 } else {
-                    $('#sortable').append('<li class="ui-state-default" data-type="'+ cards[index].actionType +'">new card</li>');
+                    $('#sortable').append('<li class="ui-state-default" data-type="'+ cards[index].actionType +'">'+cards[index].customizeName+'</li>');
                 }
             }
 
+            // show operateArea by storage data
             for(let i=0; i<cards.length; i++) {
                 if(cards[i].actionType == actionType.ADD_TEXT_INPUT) {
                     $('#actionEditor').append('<div class="operateArea"><button class="btn trashBtn" data-serial="'+i+'"><i class="fas fa-trash"></i></button>' + 
@@ -133,20 +145,9 @@ function saveData() {
         for(let i=0; i<cards.length; i++) {
             cardArray.push({});
             cardArray[i].actionType = cards.eq(i).data('type');
+            cardArray[i].customizeName = cards.eq(i).text();
         }
         chrome.storage.sync.set({'cards': cardArray});
-
-        // for(let i=0; i<cardArray.length; i++) {
-        //     if(cardArray[i].actionType == actionType.ADD_TEXT_INPUT) {
-        //         $('#actionEditor').append('<div class="operateArea"><button class="btn trashBtn" data-serial="'+i+'"><i class="fas fa-trash"></i></button>' + 
-        //         '<button class="btn editBtn"><i class="fas fa-edit"></i></button>' + 
-        //         '<button class="btn"><i class="fas fa-crosshairs"></i></button></div>');
-        //     } else if(cardArray[i].actionType == actionType.END) {
-        //         // do nothing
-        //     }else {
-        //         $('#actionEditor').append('<div class="operateArea"><button class="btn trashBtn" data-serial="'+i+'"><i class="fas fa-trash"></i></button>');
-        //     }
-        // }
         
         //清空畫面並重置
         deleteAllCards();
@@ -174,4 +175,20 @@ function deleteOneCard(serial) {
             });
         }
     });
+}
+
+
+function showOperateArea() {
+    let cards = $('.ui-state-default');
+    for(let i=0; i<cards.length; i++) {
+        if(cards.eq(i).data('type') == actionType.ADD_TEXT_INPUT) {
+            $('#actionEditor').append('<div class="operateArea"><button class="btn trashBtn" data-serial="'+i+'"><i class="fas fa-trash"></i></button>' + 
+            '<button class="btn editBtn"><i class="fas fa-edit"></i></button>' + 
+            '<button class="btn"><i class="fas fa-crosshairs"></i></button></div>');
+        } else if(cards.eq(i).data('type') == actionType.END) {
+            // do nothing
+        } else {
+            $('#actionEditor').append('<div class="operateArea"><button class="btn trashBtn" data-serial="'+i+'"><i class="fas fa-trash"></i></button>');
+        }
+    }
 }
