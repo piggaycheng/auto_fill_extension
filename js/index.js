@@ -1,7 +1,8 @@
 import actionType from './enum/actionType.js';
 
 $(document).ready(function() {
-    console.log("ready!");
+    init();
+    console.log("init!");
 
     $('#clearStorageBtn').on('click', function(e){
         chrome.storage.sync.clear(function(){
@@ -26,29 +27,7 @@ $(document).ready(function() {
         }
         // 隱藏
         $(this).hide();
-
-        // 儲存所有卡片
-        chrome.storage.sync.get(['cards'], function(result) {
-            let cards = $('.ui-state-default');
-            let cardArray = [];
-            for(let i=0; i<cards.length; i++) {
-                cardArray.push({});
-                cardArray[i].actionType = cards.eq(i).data('type');
-            }
-            chrome.storage.sync.set({'cards': cardArray});
-
-            for(let i=0; i<cardArray.length; i++) {
-                if(cardArray[i].actionType == actionType.ADD_TEXT_INPUT) {
-                    $('#actionEditor').append('<div class="operateArea"><button class="btn trashBtn"><i class="fas fa-trash"></i></button>' + 
-                    '<button class="btn"><i class="fas fa-edit"></i></button>' + 
-                    '<button class="btn"><i class="fas fa-crosshairs"></i></button></div>');
-                } else if(cardArray[i].actionType == actionType.END) {
-                    // do nothing
-                }else {
-                    $('#actionEditor').append('<div class="operateArea"><button class="btn trashBtn"><i class="fas fa-trash"></i></button>');
-                }
-            }
-        });
+        saveData();
     });
 
     // 按下OK(編輯)
@@ -70,35 +49,9 @@ $(document).ready(function() {
         }
     });
 
-    // 取得chrome storage data
-    chrome.storage.sync.get(['cards'], function(result) {
-        if(result.cards) {
-            let cards = result.cards;
-            for(let index in cards) {
-                // 移除重複的endCard
-                if(cards[index].actionType == actionType.END) {
-                    $('#endCard').remove();
-                    $('#sortable').append('<li class="ui-state-default" data-type="'+ cards[index].actionType +'">end</li>');
-                } else {
-                    $('#sortable').append('<li class="ui-state-default" data-type="'+ cards[index].actionType +'">123</li>');
-                }
-            }
 
-            for(let i=0; i<cards.length; i++) {
-                if(cards[i].actionType == actionType.ADD_TEXT_INPUT) {
-                    $('#actionEditor').append('<div class="operateArea"><button class="btn trashBtn"><i class="fas fa-trash"></i></button>' + 
-                    '<button class="btn editBtn"><i class="fas fa-edit"></i></button>' + 
-                    '<button class="btn"><i class="fas fa-crosshairs"></i></button></div>');
-                } else if(cards[i].actionType == actionType.END) {
-                    // do nothing
-                } else {
-                    $('#actionEditor').append('<div class="operateArea"><button class="btn trashBtn"><i class="fas fa-trash"></i></button>');
-                }
-            }
-        }
-    });
 
-    chrome.storage.onChanged.addListener(onStorageChangeHandler);
+    // chrome.storage.onChanged.addListener(onStorageChangeHandler);
 
     $("#sortable").sortable({
         revert: true,
@@ -130,7 +83,8 @@ $(document).ready(function() {
 });
 
 $(document).on('click', '.trashBtn', function(e){
-    console.log(e);
+    console.log('clear serial number: ' + $(this).data('serial'));
+    deleteOneCard($(this).data('serial'));
 });
 
 $(document).on('click', '.editBtn', function(e){
@@ -139,4 +93,85 @@ $(document).on('click', '.editBtn', function(e){
 
 function onStorageChangeHandler(changes, namespace) {
     console.log(changes);
+}
+
+function init() {
+    // 取得chrome storage data
+    chrome.storage.sync.get(['cards'], function(result) {
+        if(result.cards) {
+            let cards = result.cards;
+            for(let index in cards) {
+                // 移除重複的endCard
+                if(cards[index].actionType == actionType.END) {
+                    $('#endCard').remove();
+                    $('#sortable').append('<li class="ui-state-default" data-type="'+ cards[index].actionType +'">end</li>');
+                } else {
+                    $('#sortable').append('<li class="ui-state-default" data-type="'+ cards[index].actionType +'">new card</li>');
+                }
+            }
+
+            for(let i=0; i<cards.length; i++) {
+                if(cards[i].actionType == actionType.ADD_TEXT_INPUT) {
+                    $('#actionEditor').append('<div class="operateArea"><button class="btn trashBtn" data-serial="'+i+'"><i class="fas fa-trash"></i></button>' + 
+                    '<button class="btn editBtn"><i class="fas fa-edit"></i></button>' + 
+                    '<button class="btn"><i class="fas fa-crosshairs"></i></button></div>');
+                } else if(cards[i].actionType == actionType.END) {
+                    // do nothing
+                } else {
+                    $('#actionEditor').append('<div class="operateArea"><button class="btn trashBtn" data-serial="'+i+'"><i class="fas fa-trash"></i></button>');
+                }
+            }
+        }
+    });
+}
+
+function saveData() {
+    // 儲存所有卡片
+    chrome.storage.sync.get(['cards'], function(result) {
+        let cards = $('.ui-state-default');
+        let cardArray = [];
+        for(let i=0; i<cards.length; i++) {
+            cardArray.push({});
+            cardArray[i].actionType = cards.eq(i).data('type');
+        }
+        chrome.storage.sync.set({'cards': cardArray});
+
+        // for(let i=0; i<cardArray.length; i++) {
+        //     if(cardArray[i].actionType == actionType.ADD_TEXT_INPUT) {
+        //         $('#actionEditor').append('<div class="operateArea"><button class="btn trashBtn" data-serial="'+i+'"><i class="fas fa-trash"></i></button>' + 
+        //         '<button class="btn editBtn"><i class="fas fa-edit"></i></button>' + 
+        //         '<button class="btn"><i class="fas fa-crosshairs"></i></button></div>');
+        //     } else if(cardArray[i].actionType == actionType.END) {
+        //         // do nothing
+        //     }else {
+        //         $('#actionEditor').append('<div class="operateArea"><button class="btn trashBtn" data-serial="'+i+'"><i class="fas fa-trash"></i></button>');
+        //     }
+        // }
+        
+        //清空畫面並重置
+        deleteAllCards();
+        init();
+    });
+}
+
+function deleteAllCards() {
+    // 清除畫面上所有卡片
+    $('.ui-state-default').remove();
+    $('.operateArea').remove();
+}
+
+function deleteOneCard(serial) {
+    // 清除特定卡片
+    // 取得chrome storage data
+    chrome.storage.sync.get(['cards'], function(result) {
+        if(result.cards) {
+            let cards = result.cards;
+            cards.splice(serial, 1);
+            chrome.storage.sync.set({'cards': cards}, function() {
+                // 清空畫面並重置
+                deleteAllCards();
+                init();
+            });
+        }
+    });
 }
