@@ -51,8 +51,6 @@ $(document).ready(function() {
         }
     });
 
-
-
     // chrome.storage.onChanged.addListener(onStorageChangeHandler);
 
     $("#sortable").sortable({
@@ -100,6 +98,7 @@ $(document).on('click', '.trashBtn', function(e){
 
 $(document).on('click', '.editBtn', function(e){
     $('#editArea').show();
+    // TODO
 });
 
 function onStorageChangeHandler(changes, namespace) {
@@ -125,7 +124,7 @@ function init() {
             for(let i=0; i<cards.length; i++) {
                 if(cards[i].actionType == actionType.ADD_TEXT_INPUT) {
                     $('#actionEditor').append('<div class="operateArea"><button class="btn trashBtn" data-serial="'+i+'"><i class="fas fa-trash"></i></button>' + 
-                    '<button class="btn editBtn"><i class="fas fa-edit"></i></button>' + 
+                    '<button class="btn editBtn" data-serial="'+i+'"><i class="fas fa-edit"></i></button>' + 
                     '<button class="btn"><i class="fas fa-crosshairs"></i></button></div>');
                 } else if(cards[i].actionType == actionType.END) {
                     // do nothing
@@ -183,7 +182,7 @@ function showOperateArea() {
     for(let i=0; i<cards.length; i++) {
         if(cards.eq(i).data('type') == actionType.ADD_TEXT_INPUT) {
             $('#actionEditor').append('<div class="operateArea"><button class="btn trashBtn" data-serial="'+i+'"><i class="fas fa-trash"></i></button>' + 
-            '<button class="btn editBtn"><i class="fas fa-edit"></i></button>' + 
+            '<button class="btn editBtn" data-serial="'+i+'"><i class="fas fa-edit"></i></button>' + 
             '<button class="btn"><i class="fas fa-crosshairs"></i></button></div>');
         } else if(cards.eq(i).data('type') == actionType.END) {
             // do nothing
