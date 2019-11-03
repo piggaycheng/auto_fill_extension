@@ -1,5 +1,8 @@
 import {actionType, actionTypeText} from './enum/action.js';
 
+var globalCardsArray = [];
+var serial = -1;
+
 $(document).ready(function() {
     init();
     console.log("init!");
@@ -98,7 +101,9 @@ $(document).on('click', '.trashBtn', function(e){
 
 $(document).on('click', '.editBtn', function(e){
     $('#editArea').show();
-    // TODO
+    serial = $(this).data('serial');
+
+    $('#nameInput').val(globalCardsArray[serial].customizeName);
 });
 
 function onStorageChangeHandler(changes, namespace) {
@@ -110,6 +115,7 @@ function init() {
     chrome.storage.sync.get(['cards'], function(result) {
         if(result.cards) {
             let cards = result.cards;
+            globalCardsArray = result.cards;
             for(let index in cards) {
                 // 移除重複的endCard
                 if(cards[index].actionType == actionType.END) {
