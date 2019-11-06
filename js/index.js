@@ -35,8 +35,13 @@ $(document).ready(function() {
         saveData();
     });
 
-    // 按下OK(編輯)
+    // 按下OK(編輯text input)
     $('#editOkBtn').on('click', function(e){
+        let cards = $('.ui-state-default');
+        cards.eq(serial).text($('#nameInput').val());
+        cards.eq(serial).data('id', $('#idInput').val());
+        cards.eq(serial).data('value', $('#valueInput').val());
+        saveData();
         $('#editArea').hide();
     });
 
@@ -63,7 +68,7 @@ $(document).ready(function() {
             $('.operateArea').remove();
         },
         stop: function( event, ui ) {
-            showOperateArea();
+            $('#okBtn').show();
         },
         update: function( event, ui ) {
             $('#okBtn').show();
@@ -81,9 +86,8 @@ $(document).ready(function() {
             el.data('type', type);
             el.text(actionTypeText[type]);
 
-            if($('.ui-state-highlight').length > 2) {
-                $('#okBtn').show();
-            }
+            $('#okBtn').show();
+            $('.operateArea').remove();
         },
         start: function( event, ui ) {
             // 操作區塊隱藏
@@ -114,15 +118,16 @@ function init() {
     // 取得chrome storage data
     chrome.storage.sync.get(['cards'], function(result) {
         if(result.cards) {
+            console.log(result.cards);
             let cards = result.cards;
             globalCardsArray = result.cards;
             for(let index in cards) {
                 // 移除重複的endCard
                 if(cards[index].actionType == actionType.END) {
                     $('#endCard').remove();
-                    $('#sortable').append('<li class="ui-state-default" data-type="'+ cards[index].actionType +'">end</li>');
+                    $('#sortable').append('<li class="ui-state-default" data-type="'+ cards[index].actionType + '" data-serial="'+index+'">end</li>');
                 } else {
-                    $('#sortable').append('<li class="ui-state-default" data-type="'+ cards[index].actionType +'">'+cards[index].customizeName+'</li>');
+                    $('#sortable').append('<li class="ui-state-default" data-type="'+ cards[index].actionType + '" data-serial="'+index+'">'+cards[index].customizeName+'</li>');
                 }
             }
 
@@ -151,6 +156,8 @@ function saveData() {
             cardArray.push({});
             cardArray[i].actionType = cards.eq(i).data('type');
             cardArray[i].customizeName = cards.eq(i).text();
+            cardArray[i].id = cards.eq(i).data('id');
+            cardArray[i].value = cards.eq(i).data('value');
         }
         chrome.storage.sync.set({'cards': cardArray});
         
@@ -183,17 +190,17 @@ function deleteOneCard(serial) {
 }
 
 
-function showOperateArea() {
-    let cards = $('.ui-state-default');
-    for(let i=0; i<cards.length; i++) {
-        if(cards.eq(i).data('type') == actionType.ADD_TEXT_INPUT) {
-            $('#actionEditor').append('<div class="operateArea"><button class="btn trashBtn" data-serial="'+i+'"><i class="fas fa-trash"></i></button>' + 
-            '<button class="btn editBtn" data-serial="'+i+'"><i class="fas fa-edit"></i></button>' + 
-            '<button class="btn"><i class="fas fa-crosshairs"></i></button></div>');
-        } else if(cards.eq(i).data('type') == actionType.END) {
-            // do nothing
-        } else {
-            $('#actionEditor').append('<div class="operateArea"><button class="btn trashBtn" data-serial="'+i+'"><i class="fas fa-trash"></i></button>');
-        }
-    }
-}
+// function showOperateArea() {
+//     let cards = $('.ui-state-default');
+//     for(let i=0; i<cards.length; i++) {
+//         if(cards.eq(i).data('type') == actionType.ADD_TEXT_INPUT) {
+//             $('#actionEditor').append('<div class="operateArea"><button class="btn trashBtn" data-serial="'+i+'"><i class="fas fa-trash"></i></button>' + 
+//             '<button class="btn editBtn" data-serial="'+i+'"><i class="fas fa-edit"></i></button>' + 
+//             '<button class="btn"><i class="fas fa-crosshairs"></i></button></div>');
+//         } else if(cards.eq(i).data('type') == actionType.END) {
+//             // do nothing
+//         } else {
+//             $('#actionEditor').append('<div class="operateArea"><button class="btn trashBtn" data-serial="'+i+'"><i class="fas fa-trash"></i></button>');
+//         }
+//     }
+// }
