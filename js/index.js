@@ -50,6 +50,12 @@ $(document).ready(function() {
         $('#editArea').hide();
     });
 
+    $('#runBtn').on('click', function(e){
+        chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
+            chrome.tabs.sendMessage(tabs[0].id, {action: "run_all"});  
+        });
+    });
+
     // selector必須要有選值才可以新增卡片
     $('#actionSelector').on('change', function(e){
         if($('#actionSelector').val() == 0) {
@@ -118,7 +124,6 @@ function init() {
     // 取得chrome storage data
     chrome.storage.sync.get(['cards'], function(result) {
         if(result.cards) {
-            console.log(result.cards);
             let cards = result.cards;
             globalCardsArray = result.cards;
             for(let index in cards) {

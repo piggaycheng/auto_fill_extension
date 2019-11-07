@@ -52,6 +52,8 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
         allCheckbox.each(function(){
             $(this).prop("checked", true);
         });
+    } else if(msg.action == 'run_all') {
+        getCardsData();
     }
 });
 
@@ -87,3 +89,11 @@ $(document).on('click','#modalYes',function(e) {
 
     $('#addInputModal').modal('toggle');
 });
+
+function getCardsData() {
+    chrome.storage.sync.get(['cards'], function(result) {
+        if(result.cards) {
+            console.log(result.cards);
+        }
+    });
+}
