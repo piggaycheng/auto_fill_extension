@@ -53,7 +53,8 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
             $(this).prop("checked", true);
         });
     } else if(msg.action == 'run_all') {
-        getCardsData();
+        let cards = getCardsData();
+        doAction(cards);
     }
 });
 
@@ -93,7 +94,24 @@ $(document).on('click','#modalYes',function(e) {
 function getCardsData() {
     chrome.storage.sync.get(['cards'], function(result) {
         if(result.cards) {
-            console.log(result.cards);
+            return result.cards;
+        } else {
+            return [];
         }
     });
+}
+
+function doAction(cards) {
+    (async () => {
+        const src = chrome.runtime.getURL("js/enum/action.js");
+        const module = await import(src);
+        console.log(module.actionType);
+    })();
+    // for(let card in cards) {
+    //     switch(card.action) {
+    //         case actionType.ADD_TEXT_INPUT:
+                
+    //             break;
+    //     }
+    // }
 }

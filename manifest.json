@@ -25,5 +25,8 @@
 	"background" : {  
         "scripts" : ["node_modules/jquery/dist/jquery.min.js", "js/background.js"],  
         "persistent" : false
-    }
+	},
+	"web_accessible_resources" : [
+		"js/enum/action.js"
+	]
 }
