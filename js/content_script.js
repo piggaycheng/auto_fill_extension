@@ -53,8 +53,10 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
             $(this).prop("checked", true);
         });
     } else if(msg.action == 'run_all') {
-        let cards = getCardsData();
-        doAction(cards);
+        getCardsData().then(function(result) {
+            console.log(result.cards);
+            doAction(result.cards);
+        });
     }
 });
 
@@ -91,27 +93,36 @@ $(document).on('click','#modalYes',function(e) {
     $('#addInputModal').modal('toggle');
 });
 
-function getCardsData() {
-    chrome.storage.sync.get(['cards'], function(result) {
-        if(result.cards) {
-            return result.cards;
-        } else {
-            return [];
-        }
+async function getCardsData() {
+    let promise = new Promise(function(resolve, reject){
+        chrome.storage.sync.get(['cards'], function(result) {
+            let cards = [];
+            if(result.cards) {
+                cards =  result.cards;
+            }
+            resolve(cards);
+        });
     });
+
+    const cards = await promise;
+    return {cards};
 }
 
 function doAction(cards) {
-    (async () => {
+    let loadParam = async function() {
         const src = chrome.runtime.getURL("js/enum/action.js");
-        const module = await import(src);
-        console.log(module.actionType);
-    })();
-    // for(let card in cards) {
-    //     switch(card.action) {
-    //         case actionType.ADD_TEXT_INPUT:
-                
-    //             break;
-    //     }
-    // }
+        const actionModule = await import(src);
+        return {actionModule};
+    }
+
+    loadParam().then((result)=>{
+        console.log(result.actionModule.actionType);
+        // for(let card in cards) {
+        //     switch(card.action) {
+        //         case actionType.ADD_TEXT_INPUT:
+                    
+        //             break;
+        //     }
+        // }
+    });
 }
