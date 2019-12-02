@@ -54,7 +54,6 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
         });
     } else if(msg.action == 'run_all') {
         getCardsData().then(function(result) {
-            console.log(result.cards);
             doAction(result.cards);
         });
     }
@@ -116,13 +115,14 @@ function doAction(cards) {
     }
 
     loadParam().then((result)=>{
-        console.log(result.actionModule.actionType);
-        // for(let card in cards) {
-        //     switch(card.action) {
-        //         case actionType.ADD_TEXT_INPUT:
-                    
-        //             break;
-        //     }
-        // }
+        let actionType = result.actionModule.actionType
+        console.log(cards);
+        for(let i in cards) {
+            switch(cards[i].actionType) {
+                case actionType.ADD_TEXT_INPUT:
+                    $('#'+cards[i].id).val(cards[i].value);
+                    break;
+            }
+        }
     });
 }
