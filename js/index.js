@@ -131,6 +131,9 @@ function init() {
                 if(cards[index].actionType == actionType.END) {
                     $('#endCard').remove();
                     $('#sortable').append('<li class="ui-state-default" data-type="'+ cards[index].actionType + '" data-serial="'+index+'">end</li>');
+                } else if(cards[index].actionType == actionType.ADD_TEXT_INPUT) {
+                    $('#sortable').append('<li class="ui-state-default" data-type="'+ cards[index].actionType + '" data-serial="'+index+'" data-id="' + cards[index].id + 
+                    '" data-value="'+ cards[index].value +'">' + cards[index].customizeName+'</li>');
                 } else {
                     $('#sortable').append('<li class="ui-state-default" data-type="'+ cards[index].actionType + '" data-serial="'+index+'">'+cards[index].customizeName+'</li>');
                 }
