@@ -1,32 +1,43 @@
 {
-    "manifest_version": 2,
-  
-    "name": "Auto Fill Extension",
-    "description": "This extension allows the user to fill the web form automatically.",
-    "version": "1.0",
-  
-    "browser_action": {
-      "default_icon": "icon.png",
-      "default_popup": "html/index.html",
-      "default_title": "Click here!"
-    },
-    "permissions": [
-      "activeTab",
-	  "storage",
-	  "contextMenus"
-	],
-	"content_scripts" : [  
-        {  
-            "matches" : ["<all_urls>"],  
-            "js" : ["node_modules/jquery/dist/jquery.min.js", "js/content_script.js", "node_modules/bootstrap/dist/js/bootstrap.min.js"],
-            "css" : ["node_modules/bootstrap/dist/css/bootstrap.min.css"]
-        }  
-	],
-	"background" : {  
-        "scripts" : ["node_modules/jquery/dist/jquery.min.js", "js/background.js"],  
-        "persistent" : false
+	"manifest_version": 2,
+	"name": "Auto Fill Extension",
+	"description": "This extension allows the user to fill the web form automatically.",
+	"version": "1.0",
+	"browser_action": {
+		"default_icon": "icon.png",
+		"default_popup": "html/index.html",
+		"default_title": "Click here!"
 	},
-	"web_accessible_resources" : [
+	"permissions": [
+		"activeTab",
+		"storage",
+		"contextMenus",
+		"webRequest",
+		"<all_urls>"
+	],
+	"content_scripts": [
+		{
+			"matches": [
+				"<all_urls>"
+			],
+			"js": [
+				"node_modules/jquery/dist/jquery.min.js",
+				"js/content_script.js",
+				"node_modules/bootstrap/dist/js/bootstrap.min.js"
+			],
+			"css": [
+				"node_modules/bootstrap/dist/css/bootstrap.min.css"
+			]
+		}
+	],
+	"background": {
+		"scripts": [
+			"node_modules/jquery/dist/jquery.min.js",
+			"js/background.js"
+		],
+		"persistent": true
+	},
+	"web_accessible_resources": [
 		"js/enum/action.js"
 	]
 }
