@@ -134,7 +134,8 @@ function init() {
                 if(cards[index].actionType == actionType.END) {
                     $('#endCard').remove();
                     $('#sortable').append('<li class="ui-state-default" data-type="'+ cards[index].actionType + '" data-serial="'+index+'">end</li>');
-                } else if(cards[index].actionType == actionType.ADD_TEXT_INPUT || cards[index].actionType == actionType.SELECT_OPTION) {
+                } else if(cards[index].actionType == actionType.ADD_TEXT_INPUT || cards[index].actionType == actionType.SELECT_OPTION
+                    || actionType.WAIT) {
                     $('#sortable').append('<li class="ui-state-default" data-type="'+ cards[index].actionType + '" data-serial="'+index+'" data-id="' + cards[index].id + 
                     '" data-value="'+ cards[index].value +'">' + cards[index].customizeName+'</li>');
                 } else {
@@ -144,7 +145,8 @@ function init() {
 
             // show operateArea by storage data
             for(let i=0; i<cards.length; i++) {
-                if(cards[i].actionType == actionType.ADD_TEXT_INPUT || cards[i].actionType == actionType.SELECT_OPTION) {
+                if(cards[i].actionType == actionType.ADD_TEXT_INPUT || cards[i].actionType == actionType.SELECT_OPTION
+                    || actionType.WAIT) {
                     $('#actionEditor').append('<div class="operateArea"><button class="btn trashBtn" data-serial="'+i+'"><i class="fas fa-trash"></i></button>' + 
                     '<button class="btn editBtn" data-serial="'+i+'"><i class="fas fa-edit"></i></button>' + 
                     '<button class="btn"><i class="fas fa-crosshairs"></i></button></div>');
