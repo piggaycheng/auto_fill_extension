@@ -4,13 +4,17 @@ const actionType = {
     ADD_TEXT_INPUT: 1,
     CHECK_ALL_CHECKBOX: 2,
     CLICK: 3,
+    SELECT_OPTION: 4,
+    WAIT: 5,
 }
 
 const actionTypeText = {
-    0: 'none',
+    0: 'Select Action',
     1: 'add text input',
     2: 'check all checkbox',
     3: 'click',
+    4: 'select option',
+    5: 'wait',
 }
 
 Object.freeze(actionType);

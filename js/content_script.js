@@ -122,6 +122,15 @@ function doAction(cards) {
                 case actionType.ADD_TEXT_INPUT:
                     $('#'+cards[i].id).val(cards[i].value);
                     break;
+                case actionType.SELECT_OPTION:
+                    // document.getElementById(cards[i].id).selectedIndex = 1;
+                    // document.getElementById(cards[i].id).dispatchEvent(new Event('change'));
+                    let select = $('#'+cards[i].id)[0];
+                    select.selectedIndex = cards[i].value;
+                    select.dispatchEvent(new Event('change'));
+                    break;
+                default:
+                    break;
             }
         }
     });

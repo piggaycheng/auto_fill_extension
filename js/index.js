@@ -4,6 +4,7 @@ var globalCardsArray = [];
 var serial = -1;
 
 $(document).ready(function() {
+    initSelect();
     init();
     console.log("init!");
 
@@ -114,6 +115,8 @@ $(document).on('click', '.editBtn', function(e){
     serial = $(this).data('serial');
 
     $('#nameInput').val(globalCardsArray[serial].customizeName);
+    $('#idInput').val(globalCardsArray[serial].id);
+    $('#valueInput').val(globalCardsArray[serial].value);
 });
 
 function onStorageChangeHandler(changes, namespace) {
@@ -131,7 +134,7 @@ function init() {
                 if(cards[index].actionType == actionType.END) {
                     $('#endCard').remove();
                     $('#sortable').append('<li class="ui-state-default" data-type="'+ cards[index].actionType + '" data-serial="'+index+'">end</li>');
-                } else if(cards[index].actionType == actionType.ADD_TEXT_INPUT) {
+                } else if(cards[index].actionType == actionType.ADD_TEXT_INPUT || cards[index].actionType == actionType.SELECT_OPTION) {
                     $('#sortable').append('<li class="ui-state-default" data-type="'+ cards[index].actionType + '" data-serial="'+index+'" data-id="' + cards[index].id + 
                     '" data-value="'+ cards[index].value +'">' + cards[index].customizeName+'</li>');
                 } else {
@@ -141,7 +144,7 @@ function init() {
 
             // show operateArea by storage data
             for(let i=0; i<cards.length; i++) {
-                if(cards[i].actionType == actionType.ADD_TEXT_INPUT) {
+                if(cards[i].actionType == actionType.ADD_TEXT_INPUT || cards[i].actionType == actionType.SELECT_OPTION) {
                     $('#actionEditor').append('<div class="operateArea"><button class="btn trashBtn" data-serial="'+i+'"><i class="fas fa-trash"></i></button>' + 
                     '<button class="btn editBtn" data-serial="'+i+'"><i class="fas fa-edit"></i></button>' + 
                     '<button class="btn"><i class="fas fa-crosshairs"></i></button></div>');
@@ -153,6 +156,12 @@ function init() {
             }
         }
     });
+}
+
+function initSelect() {
+    for(let i in actionTypeText) {
+        $('#actionSelector').append('<option value='+ i +'>' + actionTypeText[i] + '</option>');
+    }
 }
 
 function saveData() {
