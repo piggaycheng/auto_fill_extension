@@ -1,5 +1,7 @@
 console.log("內容腳本注入");  
 const ACTION_SAVE = 1;
+let lastCardSerial = 0;                // 紀錄上次執行到的卡片數
+let isEnd = true;
 
 // $('body').click(function() {
 //     //send message to ext
@@ -53,9 +55,16 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
             $(this).prop("checked", true);
         });
     } else if(msg.action == 'run_all') {
+        isEnd = false;
         getCardsData().then(function(result) {
             doAction(result.cards);
         });
+    } else if(msg.action == 'got_ajax_response') {
+        if(!isEnd) {
+            getCardsData().then(function(result) {
+                doAction(result.cards);
+            });
+        }
     }
 });
 
@@ -116,21 +125,36 @@ function doAction(cards) {
 
     loadParam().then((result)=>{
         let actionType = result.actionModule.actionType
-        console.log(cards);
+        // console.log(cards);
         for(let i in cards) {
-            switch(cards[i].actionType) {
-                case actionType.ADD_TEXT_INPUT:
-                    $('#'+cards[i].id).val(cards[i].value);
+            if(i >= lastCardSerial) {
+                switch(cards[i].actionType) {
+                    case actionType.ADD_TEXT_INPUT:
+                        $('#'+cards[i].id).val(cards[i].value);
+                        break;
+                    case actionType.SELECT_OPTION:
+                        // document.getElementById(cards[i].id).selectedIndex = 1;
+                        // document.getElementById(cards[i].id).dispatchEvent(new Event('change'));
+                        let select = $('#'+cards[i].id)[0];
+                        select.selectedIndex = cards[i].value;
+                        select.dispatchEvent(new Event('change'));
+                        break;
+                    case actionType.WAIT:
+                    case actionType.END:
+                    default:
+                        break;
+                }
+                // 若遇到wait卡片暫停
+                if(cards[i].actionType == actionType.WAIT) {
+                    lastCardSerial = parseInt(i) + 1;
                     break;
-                case actionType.SELECT_OPTION:
-                    // document.getElementById(cards[i].id).selectedIndex = 1;
-                    // document.getElementById(cards[i].id).dispatchEvent(new Event('change'));
-                    let select = $('#'+cards[i].id)[0];
-                    select.selectedIndex = cards[i].value;
-                    select.dispatchEvent(new Event('change'));
+                }
+
+                // 若遇到end卡片結束
+                if(cards[i].actionType == actionType.END) {
+                    isEnd = true;
                     break;
-                default:
-                    break;
+                }
             }
         }
     });
