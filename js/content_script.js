@@ -139,6 +139,15 @@ function doAction(cards) {
                         select.selectedIndex = cards[i].value;
                         select.dispatchEvent(new Event('change'));
                         break;
+                    case actionType.CLICK:
+                        var target = $('#'+cards[i].id)[0];
+                        var event = new MouseEvent('click', {
+                            bubbles: true,
+                            cancelable: true,
+                            view: window
+                        });
+                        target.dispatchEvent(event);
+                        break;
                     case actionType.WAIT:
                     case actionType.END:
                     default:
