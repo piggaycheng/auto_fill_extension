@@ -48,7 +48,10 @@ chrome.contextMenus.onClicked.addListener(onContextMenusClickHandler);
 // 監聽content_page ajax response
 chrome.webRequest.onCompleted.addListener(function (details) {
     // Process the XHR response.
-    chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
-        chrome.tabs.sendMessage(tabs[0].id, {action: "got_ajax_response"});
-    });
+    console.log(details);
+    if(details.fromCache === false) {
+        chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
+            chrome.tabs.sendMessage(tabs[0].id, {action: "got_ajax_response"});
+        });
+    }
 }, {urls: ['https://*/*']});

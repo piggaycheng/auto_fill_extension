@@ -61,9 +61,11 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
         });
     } else if(msg.action == 'got_ajax_response') {
         if(!isEnd) {
-            getCardsData().then(function(result) {
-                doAction(result.cards);
-            });
+            setTimeout(function(){
+                getCardsData().then(function(result) {
+                    doAction(result.cards);
+                });
+            }, 500);
         }
     }
 });
@@ -156,6 +158,7 @@ function doAction(cards) {
                 // 若遇到wait卡片暫停
                 if(cards[i].actionType == actionType.WAIT) {
                     lastCardSerial = parseInt(i) + 1;
+                    console.log(lastCardSerial);
                     break;
                 }
 
